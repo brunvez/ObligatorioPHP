@@ -1,0 +1,40 @@
+#wrapper {
+    padding-top: 90px;
+}
+
+@media (min-width: 1500px) {
+    #wrapper.container {
+        width: 90%;
+    }
+}
+
+.navbar-default {
+    background-color: #d33c44;
+    height: 80px;
+}
+
+.navbar-default a {
+    padding-top: 30px !important;
+    color: white !important;
+    height: 79px;
+}
+
+.navbar-default li.active a {
+    background-color: #b8343b !important;
+}
+
+.btn-primary {
+    background-color: #3cd3cb !important;
+    border-radius: 0;
+    border-color: #2fa49c;
+}
+
+.btn-primary:hover {
+    background-color: #2d9e98 !important;
+    border-color: #2fa49c;
+}
+
+.btn-primary:active {
+    background-color: #25847f !important;
+    border-color: #2fa49c;
+}
