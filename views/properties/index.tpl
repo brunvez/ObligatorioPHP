@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="/css/jquery-ui/jquery-ui.structure.css">
     <link rel="stylesheet" href="/css/jquery-ui/jquery-ui.theme.css">
     <script src="/js/properties/index.js"></script>
+    <script src="/js/properties/properties_list.js"></script>
     <script src="/js/galleria/galleria-1.5.3.js"></script>
     <script src="/js/jquery-ui/jquery-ui.js"></script>
 {/block}
@@ -159,11 +160,7 @@
                     </div>
                 {/if}
             </div>
-            <div class="row properties">
-                {foreach from=$properties item=property key=index}
-                    {include file="partials/properties/property.tpl" property=$property}
-                {/foreach}
-            </div>
+            {include file="partials/properties/property.tpl" properties=$properties}
         </div>
     </div>
 {/block}

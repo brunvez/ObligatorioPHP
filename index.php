@@ -3,10 +3,13 @@ require 'config/connection.php';
 require 'lib/Bramus/Router.php';
 require 'models/City.php';
 require 'models/Property.php';
+require 'models/User.php';
 require 'controllers/HomeController.php';
 require 'controllers/PropertiesController.php';
 require 'controllers/CitiesController.php';
 require 'controllers/SessionsController.php';
+
+session_start();
 
 // Create a Router
 $router = new \Bramus\Router\Router();
@@ -16,7 +19,6 @@ $router->set404(function () {
     echo '404, route not found!';
 });
 
-$router->get('/log', 'Login::index');
 
 $router->get('/test/', function () {
     phpinfo();
@@ -26,7 +28,7 @@ $router->get('/test/', function () {
 $get_admin_routes = [
     '/properties/create',
     '/properties/(\d+)/edit',
-    '/properties/(\d+)/edit'
+    '/properties/(\d+)/edit',
 ];
 
 $get_admin_routes_patterns = implode('|', $get_admin_routes);
@@ -51,9 +53,11 @@ $router->get('/', 'Controllers\HomeController@index');
 
 $router->get('/about', 'Controllers\HomeController@about');
 
-$router->post('/login', 'SessionsController@create');
+$router->post('/login', 'Controllers\SessionsController@create');
 
-$router->delete('/login', 'SessionsController@destroy');
+$router->get('/logout', 'Controllers\SessionsController@destroy');
+
+// $router->delete('/login', 'SessionsController@destroy');
 
 $router->mount('/cities', function () use ($router) {
 

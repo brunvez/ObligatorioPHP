@@ -100,6 +100,16 @@ abstract class BaseModel implements JsonSerializable {
         return null;
     }
 
+
+    /**
+     * This method is implemented to stop PDO from setting variables
+     * that are not defined (i.e. password on User)
+     *
+     * @param $name
+     * @param $value
+     */
+    function __set($name, $value) { }
+
     // Private and protected methods
 
     /**

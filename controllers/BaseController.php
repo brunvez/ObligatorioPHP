@@ -17,11 +17,41 @@ abstract class BaseController {
             static::$smarty->compile_dir  = 'views_c';
             static::$smarty->caching      = \Smarty::CACHING_OFF;
         }
+
+        static::set_errors(static::$smarty);
+
         return static::$smarty;
     }
 
-    protected function render_json($data){
+
+    /**
+     * Renders the given data as JSON
+     *
+     * @param $data mixed
+     */
+    protected function render_json($data) {
         header('Content-Type: application/json');
         echo json_encode($data);
+    }
+
+
+    /**
+     * Redirects to the given URL
+     *
+     * @param $url
+     */
+    protected function redirect_to($url) {
+        header("Location: $url");
+    }
+
+    /**
+     * @param $smarty \Smarty
+     */
+    private static function set_errors($smarty) {
+        if (isset($_SESSION['login_error'])) {
+            $err =  $_SESSION['login_error'];
+            $smarty->assign('login_error', $err);
+            unset($_SESSION['login_error']);
+        }
     }
 }

@@ -1,4 +1,4 @@
-<div class="property col-md-6 col-sm-6 col-xs-12">
+<div class="property col-md-6">
     <div class="thumbnail">
         <img src="img/house.jpg">
         <div class="caption">
