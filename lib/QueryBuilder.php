@@ -42,6 +42,7 @@ class QueryBuilder {
 
     public function count($field = '*') {
         $prev_fields  = $this->fields;
+        $prev_conditions = $this->conditions;
         $this->fields = "COUNT(${field})";
         list($sql, $values) = $this->build_query_string();
         $stmt = $this->db->prepare($sql);
@@ -51,6 +52,7 @@ class QueryBuilder {
         }
 
         $this->fields = $prev_fields;
+        $this->conditions = $prev_conditions;
 
         return $stmt->fetchColumn();
     }

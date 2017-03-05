@@ -5,10 +5,18 @@
 }
 
 @media (min-width: 1200px) {
-    #search-box {
-        padding-top: 5px;
-        height: 640px;
-        width: 250px;
+    #search-box.affix-top, #search-box.affix {
+        padding-top: 5px !important;
+        height: 640px !important;
+        width: 250px !important;
+    }
+}
+
+@media (min-width: 1500px) and (max-width: 1950px) {
+    #search-box.affix-top, #search-box.affix {
+        padding-top: 5px !important;
+        height: 640px !important;
+        width: 300px !important;
     }
 }
 

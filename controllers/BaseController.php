@@ -19,10 +19,9 @@ abstract class BaseController {
         }
 
         static::set_errors(static::$smarty);
-
+        static::assign_logged_in(static::$smarty);
         return static::$smarty;
     }
-
 
     /**
      * Renders the given data as JSON
@@ -52,6 +51,18 @@ abstract class BaseController {
             $err =  $_SESSION['login_error'];
             $smarty->assign('login_error', $err);
             unset($_SESSION['login_error']);
+        }
+    }
+
+
+    /**
+     * @param $smarty \Smarty
+     */
+    private static function assign_logged_in($smarty) {
+        $user_is_logged = isset($_SESSION['user']) && $_SESSION['user'];
+        $smarty->assign('user_is_logged', $user_is_logged);
+        if($user_is_logged){
+            $smarty->assign('user', $_SESSION['user']);
         }
     }
 }

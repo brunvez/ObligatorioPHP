@@ -3,7 +3,7 @@
         <img src="img/house.jpg">
         <div class="caption">
             <h4>{$property->title|lower|ucfirst}</h4>
-            <h4 class="text-muted">{if $property->type === 'H'}House {else}Apartment {/if} in
+            <h4 class="text-muted">{$property->type()} in
                 {$property->neighborhood()->name}, {$property->neighborhood()->city()->name}</h4>
             <h5 class="text-muted">${$property->price}</h5>
             <h5 class="text-muted">{$property->square_meters} Square Meters</h5>

@@ -13,8 +13,8 @@
 
 {block name="body"}
     <div class="row">
-        <div class="col-md-3">
-            <div id="search-box" class="well well-lg" data-spy="affix" data-offset-top="0">
+        <div class="{if empty($properties)}col-md-12{else}col-md-3{/if}">
+            <div id="search-box" class="well well-lg" {if !empty($properties)}data-spy="affix" data-offset-top="0" {/if}>
                 <form>
                     <div class="row">
                         <div>
@@ -154,13 +154,13 @@
 
         <div class="col-md-9">
             <div class="row">
-                {if isset($smarty.session.error)}
+                {if isset($error)}
                     <div class="alert alert-danger">
-                        {$smarty.session.error}
+                        {$error}
                     </div>
                 {/if}
             </div>
-            {include file="partials/properties/property.tpl" properties=$properties}
+            {include file="partials/properties/properties_list.tpl" properties=$properties}
         </div>
     </div>
 {/block}

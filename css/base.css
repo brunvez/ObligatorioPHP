@@ -23,9 +23,12 @@
     background-color: #b8343b !important;
 }
 
+.btn {
+    border-radius: 0;
+}
+
 .btn-primary {
     background-color: #3cd3cb !important;
-    border-radius: 0;
     border-color: #2fa49c;
 }
 

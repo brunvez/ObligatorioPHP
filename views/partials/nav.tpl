@@ -15,9 +15,14 @@
             <ul class="nav navbar-nav">
                 <li class="{if $location == 'properties'}active{/if}"><a href="/properties">Properties</a></li>
                 <li class="{if $location == 'statistics'}active{/if}"><a href="/cities/statistics">Statistics</a></li>
+                {if $user_is_logged}
+                    <li class="{if $location == 'admin'}active{/if}">
+                        <a href="/properties/manage_properties">Manage Properties</a>
+                    </li>
+                {/if}
             </ul>
-            {if isset($smarty.session.user) && $smarty.session.user}
-                <p class="navbar-text navbar-right">Signed in as {$smarty.session.user->full_name()|capitalize},
+            {if $user_is_logged}
+                <p class="navbar-text navbar-right">Signed in as {$user->full_name()|capitalize},
                     <a href="/logout">Logout</a></p>
             {else}
                 <ul class="nav navbar-nav navbar-right">

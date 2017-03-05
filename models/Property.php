@@ -17,7 +17,9 @@ class Property extends BaseModel {
         $garage,
         $title,
         $body,
-        $neighborhood_id,
+        $neighborhood_id;
+
+    private
         $neighborhood;
 
     protected static $table_name = 'properties';
@@ -38,5 +40,13 @@ class Property extends BaseModel {
             $this->neighborhood = $stmt->fetchObject('\Models\Neighborhood');
         }
         return $this->neighborhood;
+    }
+
+    public function type(){
+        return $this->type === 'A' ? 'Apartment' : 'House';
+    }
+
+    public function operation(){
+        return $this->operation === 'R' ? 'Rental' : 'For Sale';
     }
 }
