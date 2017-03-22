@@ -14,15 +14,6 @@ abstract class BaseModel implements JsonSerializable {
     private static   $table_name;
     protected static $db;
 
-    //    Abstract functions
-
-    /**
-     * Inserts the record into the database
-     *
-     * @return boolean
-     */
-    abstract public function save();
-
     //      Public Methods
 
     function __construct() {
@@ -85,6 +76,13 @@ abstract class BaseModel implements JsonSerializable {
         return null;
     }
 
+    public function destroy() {
+        $table = static::$table_name;
+        $stmt  = self::connection()->prepare("DELETE FROM ${table} WHERE id = :id");
+        $stmt->bindParam(':id', $this->id());
+        return $stmt->execute();
+    }
+
     /**
      * @param $name
      * @param $arguments
@@ -108,7 +106,8 @@ abstract class BaseModel implements JsonSerializable {
      * @param $name
      * @param $value
      */
-    function __set($name, $value) { }
+    function __set($name, $value) {
+    }
 
     // Private and protected methods
 

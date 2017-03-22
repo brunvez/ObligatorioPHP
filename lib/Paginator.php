@@ -8,7 +8,7 @@ class Paginator {
     function __construct($base_url, $number_of_records, $per_page, $options = []) {
         $current_page = empty($options['page']) ? 1 : (int)$options['page'];
         $per_page     = empty($options['per_page']) ? $per_page : (int)$options['per_page'];
-        $last_page    = round($number_of_records / $per_page);
+        $last_page    = ceil($number_of_records / $per_page);
         if ($per_page < $number_of_records) {
 
             $url = $this->full_base_url($base_url, $options);

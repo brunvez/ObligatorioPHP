@@ -18,8 +18,8 @@ abstract class BaseController {
             static::$smarty->caching      = \Smarty::CACHING_OFF;
         }
 
-        static::set_errors(static::$smarty);
         static::assign_logged_in(static::$smarty);
+        static::session_to_smarty(static::$smarty);
         return static::$smarty;
     }
 
@@ -33,6 +33,10 @@ abstract class BaseController {
         echo json_encode($data);
     }
 
+    protected function request_is_ajax() {
+        return !empty($_SERVER['HTTP_X_REQUESTED_WITH']) &&
+            strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest';
+    }
 
     /**
      * Redirects to the given URL
@@ -46,23 +50,23 @@ abstract class BaseController {
     /**
      * @param $smarty \Smarty
      */
-    private static function set_errors($smarty) {
-        if (isset($_SESSION['login_error'])) {
-            $err =  $_SESSION['login_error'];
-            $smarty->assign('login_error', $err);
-            unset($_SESSION['login_error']);
+    private static function assign_logged_in($smarty) {
+        $user_is_logged = isset($_SESSION['user']) && $_SESSION['user'];
+        $smarty->assign('user_is_logged', $user_is_logged);
+        if ($user_is_logged) {
+            $smarty->assign('user', $_SESSION['user']);
         }
     }
-
 
     /**
      * @param $smarty \Smarty
      */
-    private static function assign_logged_in($smarty) {
-        $user_is_logged = isset($_SESSION['user']) && $_SESSION['user'];
-        $smarty->assign('user_is_logged', $user_is_logged);
-        if($user_is_logged){
-            $smarty->assign('user', $_SESSION['user']);
+    private static function session_to_smarty($smarty){
+        foreach ($_SESSION as $key => $value) {
+            if($key !== 'user'){
+                $smarty->assign($key, $value);
+                unset($_SESSION[$key]);
+            }
         }
     }
 }

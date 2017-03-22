@@ -3,7 +3,6 @@ $(function () {
         var propertyId = $(this).data('property-id');
         var $row = $(this).closest('tr');
 
-        console.log(propertyId);
         $('#confirm').modal({
             backdrop: 'static',
             keyboard: false

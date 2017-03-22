@@ -7,17 +7,20 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">Real Estate</a>
+            <a class="navbar-brand" href="/">Real Estate</a>
         </div>
 
-        <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="collapsible-links">
             <ul class="nav navbar-nav">
-                <li class="{if $location == 'properties'}active{/if}"><a href="/properties">Properties</a></li>
-                <li class="{if $location == 'statistics'}active{/if}"><a href="/cities/statistics">Statistics</a></li>
+                <li class="{if $location === 'properties'}active{/if}"><a href="/properties">Properties</a></li>
+                <li class="{if $location === 'statistics'}active{/if}"><a href="/cities/statistics">Statistics</a></li>
                 {if $user_is_logged}
-                    <li class="{if $location == 'admin'}active{/if}">
+                    <li class="{if $location === 'admin'}active{/if}">
                         <a href="/properties/manage_properties">Manage Properties</a>
+                    </li>
+                    <li class="{if $location === 'unanswered_questions'}active{/if}">
+                        <a href="/questions/unanswered">Unanswered Questions<span
+                                    class="badge">{$unanswered_questions}</span></a>
                     </li>
                 {/if}
             </ul>
@@ -45,11 +48,6 @@
                                                    id="login-password"
                                                    placeholder="Password">
                                         </div>
-                                        {if isset($login_error)}
-                                            <div class="alert alert-danger">
-                                                {$login_error}
-                                            </div>
-                                        {/if}
                                         <button type="submit" class="btn btn-primary btn-block">Submit</button>
                                     </form>
                                 </div>
@@ -58,6 +56,6 @@
                     </li>
                 </ul>
             {/if}
-        </div><!-- /.navbar-collapse -->
-    </div><!-- /.container-fluid -->
+        </div>
+    </div>
 </nav>

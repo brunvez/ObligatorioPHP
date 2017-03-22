@@ -1,5 +1,6 @@
 #wrapper {
     padding-top: 90px;
+    padding-bottom: 50px;
 }
 
 @media (min-width: 1500px) {
@@ -73,4 +74,16 @@ li.dropdown.open > a {
     margin-top: 30px !important;
     color: white !important;
     margin-right: 0 !important;
+}
+
+textarea {
+    resize: none;
+}
+
+input, textarea, select {
+    border-radius: 0 !important;
+}
+
+.panel {
+    border-radius: 0;
 }

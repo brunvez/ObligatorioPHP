@@ -24,6 +24,26 @@
 {include file="../partials/nav.tpl"}
 
 <div id="wrapper" class="container">
+    {if isset($error)}
+        <div class="alert alert-danger alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            {$error}
+        </div>
+    {elseif isset($notice)}
+        <div class="alert alert-info alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            {$notice}
+        </div>
+    {elseif isset($success)}
+        <div class="alert alert-info alert-success" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            {$success}
+        </div>
+    {/if}
+
     {block name="body"}
     {/block}
 </div>

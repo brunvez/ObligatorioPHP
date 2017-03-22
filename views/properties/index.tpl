@@ -7,20 +7,21 @@
     <link rel="stylesheet" href="/css/jquery-ui/jquery-ui.theme.css">
     <script src="/js/properties/index.js"></script>
     <script src="/js/properties/properties_list.js"></script>
-    <script src="/js/galleria/galleria-1.5.3.js"></script>
     <script src="/js/jquery-ui/jquery-ui.js"></script>
 {/block}
 
 {block name="body"}
     <div class="row">
         <div class="{if empty($properties)}col-md-12{else}col-md-3{/if}">
-            <div id="search-box" class="well well-lg" {if !empty($properties)}data-spy="affix" data-offset-top="0" {/if}>
+            <div id="search-box" class="well well-lg" {if !empty($properties)}data-spy="affix"
+                 data-offset-top="0" {/if}>
                 <form>
                     <div class="row">
                         <div>
                             <fieldset>
                                 <legend>Search</legend>
-                                <div class="form-group"><label for="operation-select">Operation*</label>
+                                <div class="form-group">
+                                    <label for="operation-select">Operation*</label>
                                     <select name="operation" id="operation-select" required class="form-control">
                                         <option value="S"
                                                 {if isset($smarty.get.operation) && $smarty.get.operation == 'S'}selected{/if}>
@@ -32,7 +33,8 @@
                                         </option>
                                     </select>
                                 </div>
-                                <div class="form-group"><label for="city-select">City* </label>
+                                <div class="form-group">
+                                    <label for="city-select">City* </label>
                                     <select name="city" id="city-select" required class="form-control">
                                         <option value="" selected disabled>Select a city</option>
                                         {foreach from=$cities item=city}
@@ -44,7 +46,8 @@
                                         {/foreach}
                                     </select>
                                 </div>
-                                <div class="form-group"><label for="neighborhood-select">Neighborhood</label>
+                                <div class="form-group">
+                                    <label for="neighborhood-select">Neighborhood</label>
                                     <select name="neighborhood" id="neighborhood-select" class="form-control">
                                         <option value="">Any</option>
                                         {if isset($neighborhoods)}
@@ -106,11 +109,11 @@
 
                                     <div id="price-range"></div>
 
-                                    <input type="number"
+                                    <input type="hidden"
                                            value="{if isset($smarty.get.price_from)}{$smarty.get.price_from}{else}0{/if}"
                                            name="price_from"
                                            id="price-from-input" hidden>
-                                    <input type="number"
+                                    <input type="hidden"
                                            value="{if isset($smarty.get.price_to)}{$smarty.get.price_to}{else}500000{/if}"
                                            name="price_to"
                                            id="price-to-input" hidden>
@@ -161,6 +164,12 @@
                 {/if}
             </div>
             {include file="partials/properties/properties_list.tpl" properties=$properties}
+            <div class="paginator">
+                {if isset($paginator)}
+                    {$paginator}
+                {/if}
+            </div>
         </div>
     </div>
+    <div class="loader"></div>
 {/block}

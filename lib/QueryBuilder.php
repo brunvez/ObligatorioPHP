@@ -17,7 +17,7 @@ class QueryBuilder {
 
     function __construct($table_name, $model_name) {
         $this->conditions    = [];
-        $this->fields        = '*';
+        $this->fields        = "${table_name}.*";
         $this->table_name    = $table_name;
         $this->model_name    = $model_name;
         $this->joins         = [];
@@ -41,17 +41,15 @@ class QueryBuilder {
     }
 
     public function count($field = '*') {
-        $prev_fields  = $this->fields;
+        $prev_fields     = $this->fields;
         $prev_conditions = $this->conditions;
-        $this->fields = "COUNT(${field})";
+        $this->fields    = "COUNT(${field})";
         list($sql, $values) = $this->build_query_string();
         $stmt = $this->db->prepare($sql);
 
-        if (!$stmt->execute($values)) {
-            var_dump($stmt->errorInfo());
-        }
+        $stmt->execute($values);
 
-        $this->fields = $prev_fields;
+        $this->fields     = $prev_fields;
         $this->conditions = $prev_conditions;
 
         return $stmt->fetchColumn();
@@ -99,9 +97,7 @@ class QueryBuilder {
 
         $stmt = $this->db->prepare($sql);
 
-        if (!$stmt->execute($values)) {
-            var_dump($stmt->errorInfo());
-        }
+        $stmt->execute($values);
 
         return $stmt->fetchAll(PDO::FETCH_CLASS, $this->model_name);
     }

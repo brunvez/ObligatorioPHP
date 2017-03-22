@@ -6,7 +6,7 @@
 {/block}
 
 {block name="body"}
-    <div class="well"><a href="#" class="btn btn-primary">Add Property</a></div>
+    <div class="well"><a href="/properties/create" class="btn btn-primary">Add Property</a></div>
     <div class="table-responsive">
         <table class="table table-hover table-striped">
             <thead>
@@ -43,16 +43,8 @@
             </tbody>
         </table>
     </div>
-    <nav>
-        <ul class="pager">
-            <li {if $first_page}class="disabled"{/if}>
-                <a href="/properties/manage_properties?page={$previous_page}">Previous</a>
-            </li>
-            <li {if $last_page}class="disabled"{/if}>
-                <a href="/properties/manage_properties?page={$next_page}">Next</a>
-            </li>
-        </ul>
-    </nav>
+    {$paginator}
+
     {*Confirm deletion modal*}
     <div class="modal fade" id="confirm" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">

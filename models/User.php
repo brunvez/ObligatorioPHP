@@ -10,8 +10,4 @@ class User extends BaseModel{
     public function full_name(){
         return "$this->first_name $this->last_name";
     }
-
-    public function save() {
-        throw new \Exception("New Users are not allowed");
-    }
 }

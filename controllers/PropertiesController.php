@@ -4,9 +4,11 @@ namespace Controllers;
 
 require_once 'BaseController.php';
 require_once dirname(__FILE__) . '/../lib/QueryBuilder.php';
+require_once dirname(__FILE__) . '/../lib/Paginator.php';
 
 use Models\City;
 use Models\DismissReason;
+use Models\Image;
 use Models\Neighborhood;
 use Models\Property;
 
@@ -21,10 +23,12 @@ class PropertiesController extends BaseController {
                 $per_page = !empty($_GET['per_page']) ? (int)$_GET['per_page'] : 10;
 
                 $total_count = $query->count();
-                self::smarty()->assign('total_count', $total_count);
 
-                // $query->limit($per_page)->offset($per_page * ($page - 1));
+                $query->limit($per_page)->offset($per_page * ($page - 1));
                 $properties = $query->get();
+
+                $paginator = new \Paginator('properties', $total_count, $per_page, $_GET);
+                self::smarty()->assign('paginator', $paginator);
             } else {
                 $properties = [];
                 self::smarty()->assign('error', 'You must select a city and an operation');
@@ -33,23 +37,32 @@ class PropertiesController extends BaseController {
             $properties = [];
         }
 
-        $cities = City::all();
-
-        if (!empty($_GET['city'])) {
-            $neighborhoods = Neighborhood::where('city_id = :city', [':city' => $_GET['city']])->get();
-            static::smarty()->assign('neighborhoods', $neighborhoods);
-        }
-
         static::smarty()->assign('properties', $properties);
-        static::smarty()->assign('cities', $cities);
-        static::smarty()->assign('location', 'properties');
+        if ($this->request_is_ajax()) {
+            if (!isset($paginator)) {
+                $paginator = null;
+            }
+            $properties_list = self::smarty()->fetch('partials/properties/properties_list.tpl');
+            $this->render_json(['properties' => $properties_list, 'paginator' => (string)$paginator]);
+        } else {
+            $cities = City::all();
 
-        self::smarty()->display('properties/index.tpl');
+            if (!empty($_GET['city'])) {
+                $neighborhoods = Neighborhood::where('city_id = :city', [':city' => $_GET['city']])->get();
+                static::smarty()->assign('neighborhoods', $neighborhoods);
+            }
+
+            static::smarty()->assign('cities', $cities);
+            static::smarty()->assign('location', 'properties');
+
+            self::smarty()->display('properties/index.tpl');
+        }
     }
 
     public function manage_properties() {
         $page     = !empty($_GET['page']) ? (int)$_GET['page'] : 1;
         $per_page = !empty($_GET['per_page']) ? (int)$_GET['per_page'] : 100;
+
 
         $query = Property::where('deleted = :deleted', [':deleted' => false]);
 
@@ -58,46 +71,98 @@ class PropertiesController extends BaseController {
                              ->offset($per_page * ($page - 1))
                              ->get()
         ;
+        $paginator   = new \Paginator('manage_properties', $total_count, $per_page, $_GET);
 
         $dismiss_reasons = DismissReason::all();
-
-        $last_page = round($total_count / $per_page) == $page - 1;
 
         self::smarty()->assign('properties', $properties);
         self::smarty()->assign('dismiss_reasons', $dismiss_reasons);
 
-        self::smarty()->assign('next_page', $page + 1);
-        self::smarty()->assign('last_page', $last_page);
-
-        self::smarty()->assign('previous_page', $page - 1);
-        self::smarty()->assign('first_page', $page == 1);
+        self::smarty()->assign('paginator', $paginator);
 
         self::smarty()->assign('location', 'admin');
         self::smarty()->display('properties/manage_properties.tpl');
     }
 
     public function create() {
-        echo 'create';
+        if (self::smarty()->getTemplateVars('property') === null) {
+            $property = Property::build([]);
+            self::smarty()->assign('property', $property);
+        }
+
+        $neighborhoods = Neighborhood::all();
+        self::smarty()->assign('neighborhoods', $neighborhoods);
+        self::smarty()->assign('location', 'admin');
+        self::smarty()->display('properties/create.tpl');
     }
 
     public function store() {
-        echo 'store';
+        $property = Property::build($_POST['property']);
+        if ($property->save()) {
+            $id         = $property->id();
+            $upload_dir = "properties/${id}";
+            $uploader   = new \ImageUploader($_FILES['photos']);
+            if ($path_to_photos = $uploader->upload($upload_dir)) {
+                foreach ($path_to_photos as $path) {
+                    Image::create(['url' => $path, 'property_id' => $id]);
+                }
+                $_SESSION['success'] = 'Property created successfully.';
+                $this->redirect_to('manage_properties');
+            } else {
+                $property->destroy();
+                $_SESSION['property'] = $property;
+                $_SESSION['error']    = 'Could not upload photos, try again';
+                $this->redirect_to('create');
+            }
+        } else {
+            $_SESSION['property'] = $property;
+            $_SESSION['error']    = 'Invalid property, please fill out every field correctly.';
+            $this->redirect_to('create');
+        }
     }
 
     public function show($id) {
         $property = Property::find($id);
         self::smarty()->assign('property', $property);
+        self::smarty()->assign('location', 'properties');
 
         self::smarty()->display('properties/show.tpl');
     }
 
+    public function modal($id) {
+        $property = Property::find($id);
+        self::smarty()->assign('property', $property);
+
+        self::smarty()->display('partials/properties/modal.tpl');
+    }
+
     public function edit($id) {
-        echo "edit ${id}";
+        $property      = Property::find($id);
+        $neighborhoods = Neighborhood::all();
+
+        self::smarty()->assign('property', $property);
+        self::smarty()->assign('neighborhoods', $neighborhoods);
+
+        self::smarty()->assign('location', 'admin');
+        self::smarty()->display('properties/edit.tpl');
     }
 
     public function update($id) {
-        echo json_encode($_POST);
-        echo "update ${id}";
+        if ($property = Property::find($id)) {
+            foreach ($_POST['property'] as $attr => $value) {
+                $property->{$attr} = $value;
+            }
+            if ($property->update()) {
+                $_SESSION['success'] = 'Property updated successfully.';
+                $this->redirect_to('/properties/manage_properties');
+            } else {
+                $_SESSION['property'] = $property;
+                $_SESSION['error']    = 'Invalid property, please fill out every field correctly.';
+                $this->redirect_to('create');
+            }
+        } else {
+            $this->render_json(['error' => 'Could not find Property.']);
+        }
     }
 
     public function destroy($id) {
@@ -106,6 +171,15 @@ class PropertiesController extends BaseController {
         $stmt->bindParam(':reason', $_POST['reason']);
         $stmt->execute();
         echo 'Property deleted successfully';
+    }
+
+    public function generate_pdf($id) {
+        if ($property = Property::find($id)) {
+            $generator = new \PDFGenerator($property);
+            $generator->generate();
+        } else {
+            echo '<h1>Property not found</h1>';
+        }
     }
 
     /**

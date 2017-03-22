@@ -10,13 +10,6 @@ class Neighborhood extends BaseModel {
     protected static $table_name = 'neighborhoods';
     private          $city;
 
-
-    public function save() {
-        $stmt = static::connection()->prepare('INSERT INTO neighborhoods (name) VALUES (:name)');
-        $stmt->bindParam(':name', $this->name, \PDO::PARAM_STR);
-        return $stmt->execute();
-    }
-
     public function city() {
         if(!isset($city)){
             $this->city = array_pop(City::where('id = ?', $this->city_id)->get());
@@ -24,4 +17,11 @@ class Neighborhood extends BaseModel {
         return $this->city;
     }
 
+    public function average_price_per_square_meter(){
+        $stmt = self::connection()->prepare('SELECT AVG(price / square_meters) FROM properties WHERE neighborhood_id = :id');
+        $stmt->bindParam(':id', $this->id());
+
+        $stmt->execute();
+        return round($stmt->fetchColumn());
+    }
 }

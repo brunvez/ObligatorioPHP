@@ -16,10 +16,10 @@ class SessionsController extends BaseController {
             if ($user) {
                 $_SESSION['user'] = $user;
             } else {
-                $_SESSION['login_error'] = 'Invalid username or password';
+                $_SESSION['error'] = 'Invalid username or password';
             }
         } else {
-            $_SESSION['login_error'] = 'Username and password are required';
+            $_SESSION['error'] = 'Username and password are required';
         }
 
         // redirect to the previous page
