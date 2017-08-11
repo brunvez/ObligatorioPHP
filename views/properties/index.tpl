@@ -121,7 +121,7 @@
                                 <div class="form-group">
                                     <label for="order-select">Order By</label>
                                     <select class="form-control" name="order_by" id="order-select">
-                                        <option value="" selected>Default</option>
+                                        <option value="" selected>Unordered</option>
                                         <option value="price"
                                                 {if isset($smarty.get.order_by) && $smarty.get.order_by == 'price'}selected{/if}>
                                             Price

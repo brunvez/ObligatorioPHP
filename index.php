@@ -92,6 +92,8 @@ $router->mount('/properties', function () use ($router) {
 
     $router->get('/', 'Controllers\PropertiesController@index');
 
+    $router->get('/most_expensive', 'Controllers\PropertiesController@most_expensive');
+
     $router->get('/manage_properties', 'Controllers\PropertiesController@manage_properties');
 
     $router->get('/create', 'Controllers\PropertiesController@create');

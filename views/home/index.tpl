@@ -1,6 +1,8 @@
 {extends file="layouts/main.tpl"}
 
 {block name="head"}
+    <link rel="stylesheet" href="/css/properties.css">
+    <link rel="stylesheet" href="/css/home.css">
     <script src="/js/properties/properties_list.js"></script>
 {/block}
 

@@ -165,6 +165,21 @@ class PropertiesController extends BaseController {
         }
     }
 
+    public function most_expensive(){
+        $db = \DB::connect();
+        $stmt = $db->prepare('SELECT id, operation, MAX(price) FROM properties GROUP BY operation');
+        $stmt->execute();
+
+        $results = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        $properties = [];
+        foreach ($results as $result){
+            array_push($properties, Property::find($result['id']));
+        }
+        self::smarty()->assign('location', 'most_expensive');
+        self::smarty()->assign('properties', $properties);
+        self::smarty()->display('properties/most_expensive.tpl');
+    }
+
     public function destroy($id) {
         $stmt = \DB::connect()->prepare('UPDATE properties SET deleted = TRUE, dismiss_reason_id = :reason WHERE id = :id');
         $stmt->bindParam(':id', $id);

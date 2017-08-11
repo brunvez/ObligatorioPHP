@@ -14,6 +14,9 @@
             <ul class="nav navbar-nav">
                 <li class="{if $location === 'properties'}active{/if}"><a href="/properties">Properties</a></li>
                 <li class="{if $location === 'statistics'}active{/if}"><a href="/cities/statistics">Statistics</a></li>
+                <li class="{if $location === 'most_expensive'}active{/if}">
+                    <a href="/properties/most_expensive">Most Expensive Properties</a>
+                </li>
                 {if $user_is_logged}
                     <li class="{if $location === 'admin'}active{/if}">
                         <a href="/properties/manage_properties">Manage Properties</a>

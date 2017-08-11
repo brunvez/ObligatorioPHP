@@ -2,8 +2,8 @@
 
 class ImageUploader {
 
-    const BASE_DIR      = '/uploads/';
-    const MAX_FILE_SIZE = 50000000;
+    const BASE_DIR      = './uploads/';
+    const MAX_FILE_SIZE = 5000000;
 
     private $files;
 
@@ -27,14 +27,14 @@ class ImageUploader {
             return false;
         }
         $uploads = [];
+        $dir = self::BASE_DIR . $upload_dir;
+        if (!file_exists($dir)) {
+            mkdir($dir, 0777, true);
+        }
         foreach ($this->files as $file) {
-            $dir = self::BASE_DIR . $upload_dir;
-            if (!file_exists($dir)) {
-                mkdir($dir, 0777, true);
-            }
             $target_file = "$dir/" . time() . '_' . urlencode($file['name']);
             if (move_uploaded_file($file['tmp_name'], $target_file)) {
-                array_push($uploads, $target_file);
+                array_push($uploads, substr($target_file, 1));
             } else {
                 foreach ($uploads as $uploaded_file) {
                     unlink($uploaded_file);

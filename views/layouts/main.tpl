@@ -12,7 +12,7 @@
 
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="//cdn.jsdelivr.net/alertifyjs/1.9.0/alertify.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/alertifyjs/1.9.0/alertify.min.js"></script>
 
     <title>{$title|default:'Real Estate'}</title>
 

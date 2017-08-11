@@ -1,6 +1,6 @@
 <div class="form-group">
     <label for="property-title">Title</label>
-    <input type="text" name="property[title]" id="property-title" placeholder="Title" class="form-control"
+    <input type="text" name="property[title]" id="property-title" placeholder="Title" class="form-control" required
            value="{$property->title}">
 </div>
 <div class="row">
@@ -20,14 +20,14 @@
     </div>
     <div class="form-group col-md-3">
         <label for="property-operation">Garage</label>
-        <select name="property[garage]" id="property-operation" class="form-control">
+        <select name="property[garage]" id="property-operation" class="form-control" required>
             <option value="0" {if !$property->garage}selected{/if}>No</option>
             <option value="1" {if $property->garage}selected{/if}>Yes</option>
         </select>
     </div>
     <div class="form-group col-md-3">
         <label for="property-neighborhood">Neighborhood</label>
-        <select name="property[neighborhood_id]" id="property-neighborhood" class="form-control">
+        <select name="property[neighborhood_id]" id="property-neighborhood" class="form-control" required>
             {foreach from=$neighborhoods item=neighborhood}
                 <option value="{$neighborhood->id()}"
                         {if $property->neighborhood_id === $neighborhood->id()}selected{/if}>
@@ -42,25 +42,25 @@
         <label for="property-price">Price</label>
         <div class="input-group">
             <span class="input-group-addon">$</span>
-            <input type="number" min="0" name="property[price]" value="{$property->price}" id="property-price"
+            <input type="number" min="0" name="property[price]" value="{$property->price}" id="property-price" required
                    class="form-control">
         </div>
     </div>
     <div class="form-group col-md-3">
         <label for="property-square-meters">Square Meters</label>
-        <input type="number" min="1" name="property[square_meters]" value="{$property->square_meters}"
+        <input type="number" min="1" name="property[square_meters]" value="{$property->square_meters}" required
                id="property-square-meters"
                class="form-control">
     </div>
     <div class="form-group col-md-3">
         <label for="property-rooms">Rooms</label>
-        <input type="number" min="1" name="property[rooms]" value="{$property->rooms}"
+        <input type="number" min="1" name="property[rooms]" value="{$property->rooms}" required
                id="property-rooms"
                class="form-control">
     </div>
     <div class="form-group col-md-3">
         <label for="property-bathrooms">Bathrooms</label>
-        <input type="number" min="1" name="property[bathrooms]" value="{$property->bathrooms}"
+        <input type="number" min="1" name="property[bathrooms]" value="{$property->bathrooms}" required
                id="property-bathrooms"
                class="form-control">
     </div>

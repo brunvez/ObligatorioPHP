@@ -1,5 +1,5 @@
 <div class="modal fade" tabindex="-1" role="dialog" id="property-modal">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog  -lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>

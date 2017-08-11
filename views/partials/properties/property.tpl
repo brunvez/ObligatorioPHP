@@ -17,7 +17,7 @@
             <h5 class="text-muted">Garage: {$property->has_garage()}</h5>
             <p>{$property->description|truncate:150:'...':true}</p>
             <div class="button-group">
-                <a href="properties/{$property->id()}/modal"
+                <a href="/properties/{$property->id()}/modal"
                    class="btn btn-primary btn-block show-full-description" role="button">
                     Show Full Description
                 </a>
